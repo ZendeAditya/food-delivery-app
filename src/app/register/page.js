@@ -1,20 +1,34 @@
 "use client";
-import { Josefin_Sans } from "next/font/google";
+import Link from "next/link";
 import { useState } from "react";
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [creatingUser, setCreatingUser] = useState(true);
+  const [creatingUser, setCreatingUser] = useState(false);
   const [userCreated, setUsercreated] = useState(false);
+  const [error, setError] = useState(false);
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setCreatingUser(true);
-    const res = await fetch("http://localhost:3000/api/register", {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-      headers: { "Content-type": "application/json" },
-    });
-    setCreatingUser(false);
+    try {
+      e.preventDefault();
+      setCreatingUser(true);
+      setError(false);
+      setUsercreated(false);
+      const res = await fetch("http://localhost:3000/api/register", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: { "Content-type": "application/json" },
+      });
+      setCreatingUser(false);
+      if (res.ok) {
+        setUsercreated(true);
+      }
+
+      if (!res.ok) {
+        setError(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <>
@@ -22,6 +36,19 @@ const RegisterPage = () => {
         <h1 className="text-center text-red-600 text-4xl font-semibold p-3">
           Register Page
         </h1>
+        {userCreated && (
+          <div className="my-4 text-center">
+            <p>User Created! Now You can </p>
+            <Link className="underline  text-red-700" href={"/login"}>
+              login
+            </Link>
+          </div>
+        )}
+        {error && (
+          <div className="my-4 text-center">
+            An error has occoured. <br /> Please try again late!
+          </div>
+        )}
         <form
           onSubmit={handleSubmit}
           className="flex items-center justify-center flex-col p-5"
@@ -76,6 +103,12 @@ const RegisterPage = () => {
             </svg>
             Login with google
           </button>
+          <div className="text-center my-4 text-gray-700">
+            <p>Existing account? </p>
+            <Link className="underline  text-red-700" href={"/login"}>
+              login here
+            </Link>
+          </div>
         </form>
       </section>
     </>
