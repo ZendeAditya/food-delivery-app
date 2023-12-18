@@ -5,7 +5,7 @@ import RightIcons from "./RightIcons";
 const Hero = () => {
   return (
     <>
-      <section className="hero">
+      <section className="hero mt-8">
         <div className="py-12">
           <h1 className="text-4xl font-semibold leading-normal">
             Everyting <br /> is better <br /> with a{" "}
