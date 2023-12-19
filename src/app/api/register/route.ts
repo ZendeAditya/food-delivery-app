@@ -6,6 +6,6 @@ export async function POST(req: any) {
   await connectDB();
   const createdUser = await User.create(body);
 
-  console.log(createdUser);
+  console.log("createdUser", createdUser);
   return NextResponse.json({ createdUser }, { status: 201 });
 }

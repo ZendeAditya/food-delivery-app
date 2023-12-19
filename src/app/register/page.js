@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+let uri = "http://127.0.0.1:3000/api/register";
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,21 +14,21 @@ const RegisterPage = () => {
       setCreatingUser(true);
       setError(false);
       setUsercreated(false);
-      const res = await fetch("http://localhost:3000/api/register", {
+      const res = await fetch(uri, {
         method: "POST",
         body: JSON.stringify({ email, password }),
         headers: { "Content-type": "application/json" },
       });
+      console.log(res);
       setCreatingUser(false);
-      if (res.ok) {
-        setUsercreated(true);
-      }
+      setUsercreated(true);
 
       if (!res.ok) {
         setError(true);
+        console.log("Error");
       }
     } catch (error) {
-      console.log(error);
+      console.log("Something went wrong");
     }
   };
   return (
@@ -104,7 +105,7 @@ const RegisterPage = () => {
             Login with google
           </button>
           <div className="text-center my-4 text-gray-700">
-            <p>Existing account? </p>
+            Existing account?
             <Link className="underline  text-red-700" href={"/login"}>
               login here
             </Link>
